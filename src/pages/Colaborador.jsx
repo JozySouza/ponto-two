@@ -54,19 +54,19 @@ export default function Colaborador() {
   }
 
   async function handlePunch() {
-    setPunching(true)
-    const result = await punch(user.id)
-    setPunching(false)
-    if (result.offline) {
-      showToast('Salvo offline — será sincronizado em breve')
-    } else if (result.error) {
-      showToast(result.error)
-    } else {
-      showToast('Ponto registrado!')
-    }
-    loadNextType()
-    loadHistory()
+  setPunching(true)
+  const result = await punch(user.id)
+  setPunching(false)
+  if (result.offline) {
+    showToast('Salvo offline — será sincronizado em breve')
+  } else if (result.error) {
+    showToast(typeof result.error === 'string' ? result.error : 'Erro ao registrar ponto')
+  } else {
+    showToast('Ponto registrado!')
   }
+  loadNextType()
+  loadHistory()
+}
 
   function showToast(msg) {
     setToast(msg)
