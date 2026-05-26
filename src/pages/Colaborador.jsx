@@ -10,13 +10,6 @@ const LABELS = {
   exit: 'Registrar Saída',
 }
 
-const PUNCH_PT = {
-  entry: 'Entrada',
-  lunch: 'Almoço',
-  return: 'Retorno',
-  exit: 'Saída',
-}
-
 function formatTime(ts) {
   if (!ts) return '—'
   return new Date(ts).toLocaleTimeString('pt-BR', {
@@ -84,7 +77,6 @@ export default function Colaborador() {
 
   return (
     <div style={{ maxWidth: 480, margin: '0 auto', padding: 20, fontFamily: 'sans-serif' }}>
-
       <div style={{
         background: '#1A1A2E', borderRadius: 12, padding: 24,
         marginBottom: 20, color: '#fff'
@@ -98,7 +90,6 @@ export default function Colaborador() {
         <p style={{ fontFamily: 'monospace', fontSize: 32, marginBottom: 20 }}>
           {new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}
         </p>
-
         <button
           onClick={handlePunch}
           disabled={punching || !nextType}
@@ -115,7 +106,6 @@ export default function Colaborador() {
       <h3 style={{ fontSize: 11, color: '#999', textTransform: 'uppercase', marginBottom: 10 }}>
         Histórico
       </h3>
-
       <div style={{ border: '1px solid #eee', borderRadius: 10, overflow: 'hidden' }}>
         {records.length === 0 && (
           <p style={{ padding: 16, color: '#999', fontSize: 13 }}>Nenhum registro ainda.</p>
