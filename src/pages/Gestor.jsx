@@ -16,7 +16,7 @@ function formatDate(dateStr) {
 }
 
 export default function Gestor() {
-  const { profile, signOut } = useAuth()
+  const { signOut } = useAuth()
   const [summary, setSummary] = useState([])
   const [requests, setRequests] = useState([])
 
@@ -68,7 +68,6 @@ export default function Gestor() {
 
   return (
     <div style={{ maxWidth: 680, margin: '0 auto', padding: 20, fontFamily: 'sans-serif' }}>
-
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20 }}>
         <h1 style={{ fontSize: 20 }}>Painel do Gestor</h1>
         <button onClick={signOut} style={{
@@ -84,9 +83,7 @@ export default function Gestor() {
           { label: 'Ausentes hoje', value: ausentes, color: '#e94560' },
           { label: 'Ajustes pendentes', value: requests.length, color: '#FDCB6E' },
         ].map((m, i) => (
-          <div key={i} style={{
-            background: '#f9f9f9', borderRadius: 10, padding: 16
-          }}>
+          <div key={i} style={{ background: '#f9f9f9', borderRadius: 10, padding: 16 }}>
             <p style={{ fontSize: 11, color: '#999', marginBottom: 6 }}>{m.label}</p>
             <p style={{ fontSize: 28, fontWeight: 500, color: m.color }}>{m.value}</p>
           </div>

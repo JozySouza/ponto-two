@@ -35,7 +35,6 @@ export default function Login() {
         <p style={{ color: '#666', marginBottom: '24px', fontSize: '14px' }}>
           Acesse sua conta
         </p>
-
         <input
           type="email"
           placeholder="E-mail"
@@ -46,7 +45,6 @@ export default function Login() {
             border: '1px solid #ddd', borderRadius: '8px', fontSize: '14px'
           }}
         />
-
         <input
           type="password"
           placeholder="Senha"
@@ -58,13 +56,11 @@ export default function Login() {
             border: '1px solid #ddd', borderRadius: '8px', fontSize: '14px'
           }}
         />
-
         {error && (
           <p style={{ color: '#e94560', fontSize: '13px', marginBottom: '12px' }}>
             {error}
           </p>
         )}
-
         <button
           onClick={handleLogin}
           disabled={loading}
