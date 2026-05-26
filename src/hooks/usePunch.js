@@ -3,7 +3,7 @@ import { saveOffline, syncOfflineRecords } from '../lib/offline'
 
 const SEQUENCE = ['entry', 'lunch', 'return', 'exit']
 
-export function usePunch(userId) {
+export function usePunch() {
   async function getLocation() {
     return new Promise((resolve) => {
       if (!navigator.geolocation) return resolve(null)
@@ -56,11 +56,7 @@ export function usePunch(userId) {
     return { data, error }
   }
 
-  async function syncWhenOnline() {
-    if (navigator.onLine) await syncOfflineRecords()
-  }
-
-  window.addEventListener('online', syncWhenOnline)
+  window.addEventListener('online', () => syncOfflineRecords())
 
   return { punch, nextPunchType }
 }

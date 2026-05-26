@@ -6,27 +6,35 @@ import Gestor from './pages/Gestor'
 
 function ProtectedRoute({ children, roles }) {
   const { user, profile, loading } = useAuth()
-  if (loading) return <div>Carregando...</div>
+  if (loading) return <div style={{ padding: 20 }}>Carregando...</div>
   if (!user) return <Navigate to="/login" />
   if (roles && !roles.includes(profile?.role)) return <Navigate to="/" />
   return children
 }
 
+function HomeRoute() {
+  const { profile, loading } = useAuth()
+  console.log('profile:', profile)
+  console.log('loading:', loading)
+  if (loading) return <div style={{ padding: 20 }}>Carregando...</div>
+  if (profile?.role === 'manager' || profile?.role === 'hr' || profile?.role === 'admin') {
+    return <Navigate to="/gestor" />
+  }
+  return <Colaborador />
+}
+
 export default function App() {
-  const { user, profile } = useAuth()
   return (
     <BrowserRouter>
       <Routes>
         <Route path="/login" element={<Login />} />
         <Route path="/" element={
           <ProtectedRoute>
-            {profile?.role === 'employee'
-              ? <Colaborador />
-              : <Gestor />}
+            <HomeRoute />
           </ProtectedRoute>
         } />
         <Route path="/gestor" element={
-          <ProtectedRoute roles={['manager','hr','admin']}>
+          <ProtectedRoute roles={['manager', 'hr', 'admin']}>
             <Gestor />
           </ProtectedRoute>
         } />

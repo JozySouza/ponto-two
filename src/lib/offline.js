@@ -1,4 +1,5 @@
 import { openDB } from 'idb'
+import { supabase } from './supabase'
 
 async function getDB() {
   return openDB('ponto-two', 1, {
