@@ -87,40 +87,25 @@ export default function Gestor() {
   }
   setSalvando(true)
 
-  const { data: authData, error: authError } = await supabase.auth.admin.createUser({
-    email: form.email,
-    password: form.password,
-    email_confirm: true,
+  const { data, error } = await supabase.rpc('create_user_by_manager', {
+    p_email: form.email,
+    p_full_name: form.full_name,
+    p_role: form.role,
+    p_company_id: '11111111-0000-0000-0000-000000000001'
   })
-
-  if (authError) {
-    setSalvando(false)
-    showToast('Erro ao criar usuário: ' + authError.message)
-    return
-  }
-
-  const { error: dbError } = await supabase
-    .from('users')
-    .insert({
-      id: authData.user.id,
-      email: form.email,
-      full_name: form.full_name,
-      role: form.role,
-      active: true,
-      company_id: '11111111-0000-0000-0000-000000000001'
-    })
 
   setSalvando(false)
 
-  if (dbError) {
-    showToast('Erro ao salvar perfil: ' + dbError.message)
+  if (error) {
+    showToast('Erro: ' + error.message)
   } else {
-    showToast('Funcionário cadastrado com sucesso!')
+    showToast('Funcionário cadastrado! Senha deve ser definida pelo Supabase.')
     setForm({ full_name: '', email: '', password: '', role: 'employee' })
     loadFuncionarios()
   }
 }
-   async function toggleAtivo(id, ativo) {
+   
+  async function toggleAtivo(id, ativo) {
     await supabase
       .from('users')
       .update({ active: !ativo })
