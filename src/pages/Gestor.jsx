@@ -80,26 +80,29 @@ export default function Gestor() {
     loadRequests()
   }
 
-  async function handleCadastro() {
+ async function handleCadastro() {
   if (!form.full_name || !form.email || !form.password) {
     showToast('Preencha todos os campos')
     return
   }
   setSalvando(true)
 
-  const { data, error } = await supabase.rpc('create_user_by_manager', {
-    p_email: form.email,
-    p_full_name: form.full_name,
-    p_role: form.role,
-    p_company_id: '11111111-0000-0000-0000-000000000001'
+  const { data, error } = await supabase.functions.invoke('create-user', {
+    body: {
+      email: form.email,
+      password: form.password,
+      full_name: form.full_name,
+      role: form.role,
+      company_id: '11111111-0000-0000-0000-000000000001'
+    }
   })
 
   setSalvando(false)
 
-  if (error) {
-    showToast('Erro: ' + error.message)
+  if (error || data?.error) {
+    showToast('Erro: ' + (data?.error ?? error.message))
   } else {
-    showToast('Funcionário cadastrado! Senha deve ser definida pelo Supabase.')
+    showToast('Funcionário cadastrado com sucesso!')
     setForm({ full_name: '', email: '', password: '', role: 'employee' })
     loadFuncionarios()
   }
