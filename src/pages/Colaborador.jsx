@@ -116,10 +116,10 @@ export default function Colaborador() {
             padding: '10px 14px', borderBottom: i < records.length - 1 ? '1px solid #f0f0f0' : 'none',
             fontSize: 13
           }}>
-            <span style={{ fontWeight: 500 }}>{formatDate(r.work_date)}</span>
-            <span style={{ color: '#666', fontFamily: 'monospace' }}>
-              {formatTime(r.entry_time)} → {formatTime(r.exit_time)}
+            <span style={{ color: '#666', fontFamily: 'monospace', fontSize: 11 }}>
+              {formatTime(r.entry_time)} · {formatTime(r.lunch_time)} · {formatTime(r.return_time)} · {formatTime(r.exit_time)}
             </span>
+              
             <span style={{ fontFamily: 'monospace', fontSize: 12 }}>
               {r.total_hours_raw ? r.total_hours_raw.toFixed(1) + 'h' : '—'}
             </span>
