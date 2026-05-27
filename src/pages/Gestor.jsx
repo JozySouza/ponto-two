@@ -81,33 +81,46 @@ export default function Gestor() {
   }
 
   async function handleCadastro() {
-    if (!form.full_name || !form.email || !form.password) {
-      showToast('Preencha todos os campos')
-      return
-    }
-    setSalvando(true)
+  if (!form.full_name || !form.email || !form.password) {
+    showToast('Preencha todos os campos')
+    return
+  }
+  setSalvando(true)
 
-    const { data, error } = await supabase.functions.invoke('create-user', {
-      body: {
-        email: form.email,
-        password: form.password,
-        full_name: form.full_name,
-        role: form.role,
-      }
-    })
+  const { data: authData, error: authError } = await supabase.auth.admin.createUser({
+    email: form.email,
+    password: form.password,
+    email_confirm: true,
+  })
 
+  if (authError) {
     setSalvando(false)
-
-    if (error) {
-      showToast('Erro ao cadastrar funcionário')
-    } else {
-      showToast('Funcionário cadastrado com sucesso!')
-      setForm({ full_name: '', email: '', password: '', role: 'employee' })
-      loadFuncionarios()
-    }
+    showToast('Erro ao criar usuário: ' + authError.message)
+    return
   }
 
-  async function toggleAtivo(id, ativo) {
+  const { error: dbError } = await supabase
+    .from('users')
+    .insert({
+      id: authData.user.id,
+      email: form.email,
+      full_name: form.full_name,
+      role: form.role,
+      active: true,
+      company_id: '11111111-0000-0000-0000-000000000001'
+    })
+
+  setSalvando(false)
+
+  if (dbError) {
+    showToast('Erro ao salvar perfil: ' + dbError.message)
+  } else {
+    showToast('Funcionário cadastrado com sucesso!')
+    setForm({ full_name: '', email: '', password: '', role: 'employee' })
+    loadFuncionarios()
+  }
+}
+   async function toggleAtivo(id, ativo) {
     await supabase
       .from('users')
       .update({ active: !ativo })
